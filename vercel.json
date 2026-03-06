@@ -1,9 +1,20 @@
 {
-  "routes": [
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/icon-192.png", "dest": "/icon-192.png" },
-    { "src": "/icon-512.png", "dest": "/icon-512.png" },
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "https://redaltea.com/" }
+  "rewrites": [
+    {
+      "source": "/manifest.json",
+      "destination": "/manifest.json"
+    },
+    {
+      "source": "/icon-192.png",
+      "destination": "/icon-192.png"
+    },
+    {
+      "source": "/icon-512.png",
+      "destination": "/icon-512.png"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
