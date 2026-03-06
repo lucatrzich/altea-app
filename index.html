@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altea</title>
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#2C7BE5">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      // 1. Registramos el Service Worker para que aparezca el botón de instalar
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
 
-<title>Altea</title>
+      // 2. Redirección inteligente
+      // Si la app YA está instalada (modo standalone), o después de un par de segundos, mandamos a Odoo
+      window.onload = () => {
+        setTimeout(() => {
+            window.location.href = "https://redaltea.com";
+        }, 1500); // 1.5 segundos para que el usuario vea tu logo/splash
+      };
+    </script>
 
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icon-192.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Altea">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-<script>
-// registrar service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
-
-// redirección a la web real
-window.location.replace("https://redaltea.com");
-</script>
-
+    <style>
+        body { 
+            background: #2C7BE5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            color: white; 
+            font-family: sans-serif; 
+        }
+    </style>
 </head>
-
 <body>
-
-Cargando Altea...
-
+    <div style="text-align: center;">
+        <img src="/icon-192.png" alt="Altea" style="width: 100px; border-radius: 20px; margin-bottom: 20px;">
+        <h1>Altea</h1>
+        <p>Abriendo aplicación...</p>
+    </div>
 </body>
-
 </html>
