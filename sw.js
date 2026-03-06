@@ -1,12 +1,8 @@
-self.addEventListener("install", event => {
-  console.log("Service Worker instalado");
-  self.skipWaiting();
+self.addEventListener('install', (event) => {
+  console.log('Service Worker instalado');
 });
 
-self.addEventListener("activate", event => {
-  console.log("Service Worker activo");
-});
-
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', (event) => {
+  // Esto permite que la app funcione offline o cargue rápido
   event.respondWith(fetch(event.request));
 });
