@@ -4,6 +4,6 @@
     { "src": "/icon-192.png", "dest": "/icon-192.png" },
     { "src": "/icon-512.png", "dest": "/icon-512.png" },
     { "src": "/", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "https://redaltea.com/$1" }
+    { "src": "/(.*)", "dest": "https://redaltea.com/" }
   ]
 }
