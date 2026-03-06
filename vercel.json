@@ -1,8 +1,6 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!manifest.json|icon-192.png|icon-512.png).*)",
-      "destination": "https://redaltea.com/$1"
-    }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
