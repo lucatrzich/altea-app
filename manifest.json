@@ -1,7 +1,7 @@
 {
 "name": "Altea",
 "short_name": "Altea",
-"start_url": "/",
+"start_url": "https://redaltea.com",
 "display": "standalone",
 "background_color": "#ffffff",
 "theme_color": "#2C7BE5",
