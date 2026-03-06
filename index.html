@@ -6,150 +6,213 @@
     <title>Altea</title>
     
     <link rel="manifest" href="/manifest.json">
-    
-    <!-- Android -->
-    <meta name="theme-color" content="#4F46E5">
+    <meta name="theme-color" content="#6C4EBF">
     <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- Apple -->
-    <link rel="apple-touch-icon" href="/icon-192.png">
+
+    <!-- iOS / iPadOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-192.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Altea">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            background: #ffffff; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh;
-            font-family: -apple-system, system-ui, sans-serif; 
-        }
-        .container { text-align: center; }
-        .logo { 
-            width: 90px; 
-            border-radius: 20%; 
-            margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        p { color: #666; font-size: 14px; margin-bottom: 24px; }
 
-        /* Banner de instalación manual para cuando no aparece el nativo */
+        body {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: -apple-system, system-ui, sans-serif;
+        }
+
+        .splash {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 22%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+        }
+
+        .app-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .enter-btn {
+            margin-top: 12px;
+            background: #6C4EBF;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .enter-btn:active { opacity: 0.8; }
+
+        /* Banner Android */
         #install-banner {
             display: none;
             position: fixed;
             bottom: 24px;
             left: 16px;
             right: 16px;
-            background: #4F46E5;
+            background: #6C4EBF;
             color: white;
-            padding: 16px 20px;
+            padding: 14px 16px;
             border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            box-shadow: 0 4px 24px rgba(108,78,191,0.35);
+            flex-direction: row;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             z-index: 999;
+            animation: slideUp 0.3s ease;
         }
         #install-banner.show { display: flex; }
-        #install-banner span { flex: 1; font-size: 14px; }
+
+        /* Banner iOS */
+        #ios-banner {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 16px;
+            right: 16px;
+            background: #1a1a1a;
+            color: white;
+            padding: 14px 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 10px;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
+        #ios-banner.show { display: flex; }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .banner-text { flex: 1; font-size: 13px; line-height: 1.5; }
+        .banner-text strong { display: block; font-size: 14px; margin-bottom: 2px; }
+
         #install-btn {
             background: white;
-            color: #4F46E5;
+            color: #6C4EBF;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            white-space: nowrap;
+            align-self: center;
         }
-        #dismiss-btn {
+
+        .close-btn {
             background: none;
             border: none;
-            color: white;
+            color: rgba(255,255,255,0.5);
             font-size: 20px;
             cursor: pointer;
             line-height: 1;
+            padding: 0 2px;
+            align-self: flex-start;
         }
+
+        .ios-icon { font-size: 22px; margin-top: 2px; }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="splash">
         <img src="/icon-192.png" alt="Altea" class="logo">
-        <p>Iniciando Altea...</p>
+        <div class="app-name">Altea</div>
+        <button class="enter-btn" onclick="goToApp()">Ingresar</button>
     </div>
 
-    <!-- Banner de instalación (fallback si el nativo no aparece) -->
+    <!-- Banner Android -->
     <div id="install-banner">
-        <span>📲 Instalá Altea en tu pantalla de inicio</span>
+        <div class="banner-text">
+            <strong>Instalá Altea</strong>
+            Accedé más rápido desde tu pantalla de inicio
+        </div>
         <button id="install-btn">Instalar</button>
-        <button id="dismiss-btn">✕</button>
+        <button class="close-btn" onclick="document.getElementById('install-banner').classList.remove('show')">✕</button>
+    </div>
+
+    <!-- Banner iOS -->
+    <div id="ios-banner">
+        <span class="ios-icon">📲</span>
+        <div class="banner-text">
+            <strong>Instalá Altea</strong>
+            Tocá <strong>Compartir ⎙</strong> y luego <strong>"Agregar a inicio"</strong>
+        </div>
+        <button class="close-btn" onclick="document.getElementById('ios-banner').classList.remove('show')">✕</button>
     </div>
 
     <script>
-      // Registro del Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('SW registrado', reg.scope))
-            .catch(err => console.error('Error SW', err));
-        });
-      }
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(r => console.log('SW ok', r.scope))
+                .catch(e => console.error('SW error', e));
+        }
 
-      // Capturar evento de instalación
-      let deferredPrompt = null;
-      const banner = document.getElementById('install-banner');
-      const installBtn = document.getElementById('install-btn');
-      const dismissBtn = document.getElementById('dismiss-btn');
+        // Detectores
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches
+                   || window.navigator.standalone === true;
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+                   || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
 
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        // Mostrar banner propio
-        banner.classList.add('show');
-        console.log('beforeinstallprompt capturado ✓');
-      });
-
-      installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log('Resultado instalación:', outcome);
-        deferredPrompt = null;
-        banner.classList.remove('show');
-      });
-
-      dismissBtn.addEventListener('click', () => {
-        banner.classList.remove('show');
-        // Redirigir igual
-        goToApp();
-      });
-
-      // Detectar si ya está instalada como PWA
-      const isPWA = window.matchMedia('(display-mode: standalone)').matches 
-                 || window.navigator.standalone === true;
-
-      function goToApp() {
-        window.location.href = "https://redaltea.com";
-      }
-
-      if (isPWA) {
-        // Ya instalada → ir directo sin esperar
-        goToApp();
-      } else {
-        // Esperar un poco más para que Chrome detecte la PWA y dispare el evento
-        // Si el usuario no instala, igual redirigimos
-        setTimeout(() => {
-          if (!deferredPrompt) {
-            // No hubo prompt (ya instalada antes, o Safari), redirigir
+        // Si ya está instalada → ir directo
+        if (isPWA) {
             goToApp();
-          }
-          // Si hay prompt visible, no redirigir todavía — el usuario decide
-        }, 4000);
-      }
+        }
+
+        // Android: captura del banner nativo
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-banner').classList.add('show');
+            console.log('✅ beforeinstallprompt capturado');
+        });
+
+        document.getElementById('install-btn').addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            document.getElementById('install-banner').classList.remove('show');
+            if (outcome === 'accepted') goToApp();
+        });
+
+        // iOS/iPadOS: mostrar instrucciones manuales
+        if (isIOS && !isPWA) {
+            document.getElementById('ios-banner').classList.add('show');
+        }
+
+        function goToApp() {
+            window.location.href = "https://redaltea.com";
+        }
     </script>
 </body>
 </html>
