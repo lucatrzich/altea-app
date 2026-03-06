@@ -16,15 +16,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <script>
-
 // registrar service worker
 if ('serviceWorker' in navigator) {
- navigator.serviceWorker.register('/sw.js');
+  navigator.serviceWorker.register('/sw.js');
 }
 
 // redirección a la web real
 window.location.replace("https://redaltea.com");
-
 </script>
 
 </head>
