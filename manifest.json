@@ -1,12 +1,11 @@
 {
-  "id": "/?source=pwa",
+  "id": "altea-pwa",
   "name": "Altea",
   "short_name": "Altea",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#2C7BE5",
-  "theme_color": "#2C7BE5",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "orientation": "portrait",
   "icons": [
     {
