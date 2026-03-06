@@ -9,33 +9,29 @@
 <title>Altea</title>
 
 <link rel="manifest" href="/manifest.json">
-
-<!-- icono para iPhone -->
 <link rel="apple-touch-icon" href="/icon-192.png">
 
-<!-- modo app en iOS -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Altea">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<style>
-html,body{
-margin:0;
-padding:0;
-height:100%;
+<script>
+
+// registrar service worker
+if ('serviceWorker' in navigator) {
+ navigator.serviceWorker.register('/sw.js');
 }
-iframe{
-border:none;
-width:100%;
-height:100vh;
-}
-</style>
+
+// redirección a la web real
+window.location.replace("https://redaltea.com");
+
+</script>
 
 </head>
 
 <body>
 
-<iframe src="https://redaltea.com"></iframe>
+Cargando Altea...
 
 </body>
 
