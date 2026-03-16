@@ -1,4 +1,4 @@
-const CACHE = 'altea-v2';
+const CACHE = 'altea-v3';
 const ASSETS = ['/', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {
