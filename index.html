@@ -1,49 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Altea</title>
 
 <link rel="manifest" href="/manifest.json">
+
 <meta name="theme-color" content="#ffffff">
 <meta name="mobile-web-app-capable" content="yes">
 
+<!-- iOS -->
 <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Altea">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <style>
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
 body{
 background:#ffffff;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 min-height:100vh;
 font-family:-apple-system,system-ui,sans-serif;
 }
 
+/* splash */
+
 .splash{
 display:flex;
 flex-direction:column;
 align-items:center;
-gap:14px;
+gap:16px;
 }
 
 .logo{
 width:96px;
 height:96px;
 border-radius:22%;
-box-shadow:0 4px 20px rgba(0,0,0,0.1);
+box-shadow:0 4px 20px rgba(0,0,0,0.10);
 }
 
 .app-name{
 font-size:24px;
 font-weight:700;
 color:#1a1a1a;
+letter-spacing:-0.5px;
 }
 
 .loading{
@@ -51,45 +64,42 @@ font-size:14px;
 color:#777;
 }
 
-/* Banner Android */
+/* banners */
 
-#install-banner{
-display:none;
-position:fixed;
-bottom:24px;
-left:16px;
-right:16px;
-background:#ffffff;
-color:#1a1a1a;
-padding:14px 16px;
-border-radius:16px;
-box-shadow:0 6px 24px rgba(0,0,0,0.15);
-align-items:center;
-gap:10px;
-z-index:999;
-}
-
-#install-banner.show{display:flex}
-
-/* Banner iOS */
-
+#install-banner,
 #ios-banner{
+
 display:none;
+
 position:fixed;
+
 bottom:24px;
 left:16px;
 right:16px;
+
 background:#ffffff;
 color:#1a1a1a;
+
 padding:14px 16px;
+
 border-radius:16px;
+
 box-shadow:0 6px 24px rgba(0,0,0,0.15);
-align-items:flex-start;
+
+align-items:center;
+
 gap:10px;
+
 z-index:999;
+
+animation:slideUp .3s ease;
+
 }
 
-#ios-banner.show{display:flex}
+#install-banner.show,
+#ios-banner.show{
+display:flex;
+}
 
 .banner-text{
 flex:1;
@@ -104,89 +114,173 @@ margin-bottom:2px;
 }
 
 #install-btn{
+
 background:#1a1a1a;
+
 color:white;
+
 border:none;
+
 padding:8px 14px;
+
 border-radius:8px;
+
 font-weight:600;
+
 cursor:pointer;
+
 font-size:13px;
+
 white-space:nowrap;
+
 }
 
 .close-btn{
+
 background:none;
+
 border:none;
+
 color:#999;
+
 font-size:20px;
+
 cursor:pointer;
+
+}
+
+@keyframes slideUp{
+
+from{
+transform:translateY(20px);
+opacity:0;
+}
+
+to{
+transform:translateY(0);
+opacity:1;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="splash">
+
 <img src="/icon-192.png" class="logo">
+
 <div class="app-name">Altea</div>
+
 <div class="loading">Cargando...</div>
+
 </div>
 
-<!-- Android -->
+<!-- Android install banner -->
 
 <div id="install-banner">
+
 <div class="banner-text">
+
 <strong>Instalá Altea</strong>
+
 Accedé más rápido desde tu pantalla de inicio
-</div>
-<button id="install-btn">Instalar</button>
-<button class="close-btn" onclick="installBanner.classList.remove('show')">✕</button>
+
 </div>
 
-<!-- iOS -->
+<button id="install-btn">Instalar</button>
+
+<button class="close-btn" onclick="installBanner.classList.remove('show')">✕</button>
+
+</div>
+
+<!-- iOS banner -->
 
 <div id="ios-banner">
+
 <div class="banner-text">
+
 <strong>Instalá Altea</strong>
+
 Tocá <strong>Compartir ⎙</strong> y luego <strong>Agregar a inicio</strong>
+
 </div>
+
 <button class="close-btn" onclick="iosBanner.classList.remove('show')">✕</button>
+
 </div>
 
 <script>
 
-// service worker
+/* =========================
+SERVICE WORKER
+========================= */
 
-if('serviceWorker' in navigator){
+if ('serviceWorker' in navigator){
+
 navigator.serviceWorker.register('/sw.js')
+
 }
 
-// detectores
+/* =========================
+DETECTORES
+========================= */
 
 const isPWA =
+
 window.matchMedia('(display-mode: standalone)').matches
+
 || window.navigator.standalone === true
 
 const isIOS =
+
 /iphone|ipad|ipod/i.test(navigator.userAgent)
+
 || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 
 const installBanner=document.getElementById('install-banner')
+
 const iosBanner=document.getElementById('ios-banner')
 
-// android install
+/* =========================
+SI YA ES PWA → IR DIRECTO
+========================= */
+
+if(isPWA){
+
+goToApp()
+
+}
+
+/* =========================
+ANDROID INSTALL
+========================= */
 
 let deferredPrompt=null
 
 window.addEventListener('beforeinstallprompt',(e)=>{
+
+console.log("beforeinstallprompt fired")
+
 e.preventDefault()
+
 deferredPrompt=e
+
+/* mini hack UX */
+
+setTimeout(()=>{
+
 installBanner.classList.add('show')
+
+},1500)
+
 })
 
 document.getElementById('install-btn').addEventListener('click',async()=>{
+
 if(!deferredPrompt) return
 
 deferredPrompt.prompt()
@@ -196,19 +290,48 @@ const {outcome}=await deferredPrompt.userChoice
 deferredPrompt=null
 
 installBanner.classList.remove('show')
-})
 
-// ios banner
+if(outcome==="accepted"){
 
-if(isIOS && !isPWA){
-iosBanner.classList.add('show')
+goToApp()
+
 }
 
-// redirect automático
+})
+
+/* =========================
+IOS INSTALL
+========================= */
+
+if(isIOS && !isPWA){
 
 setTimeout(()=>{
+
+iosBanner.classList.add('show')
+
+},1500)
+
+}
+
+/* =========================
+REDIRECT APP
+========================= */
+
+function goToApp(){
+
 window.location.href="https://redaltea.com"
-},2000)
+
+}
+
+/* =========================
+AUTO REDIRECT
+========================= */
+
+setTimeout(()=>{
+
+goToApp()
+
+},2500)
 
 </script>
 
